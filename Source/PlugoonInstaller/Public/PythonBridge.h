@@ -12,4 +12,7 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category=Python)
 	void FunctionImplementedInPython() const;
+	
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
+	TArray<FString> GetPlugoonRepositories();
 };

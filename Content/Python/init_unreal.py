@@ -11,3 +11,8 @@ class PythonBridgeImplementation(unreal.PythonBridge):
     def function_implemented_in_python(self):
         PlugoonStartup = unreal.load_asset('/PlugoonInstaller/Widgets/PlugoonInstaller.PlugoonInstaller')
         EditorUtility().spawn_and_register_tab(PlugoonStartup)
+
+    @unreal.ufunction(override=True)
+    def get_plugoon_repositories(self):
+        unreal.log("Implement GetRepositories function")
+        return ['bla', 'bli', 'blub']
