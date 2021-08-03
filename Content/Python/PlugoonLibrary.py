@@ -19,11 +19,7 @@ def GetPlugoonRepoDetails(repo):
     try:
         response = requests.get(uri)
         if response.status_code == 200:
-            # return response.json()[repo]
-            return {
-                "data": "value",
-                "version": "1.0.0"
-                }
+            return response.json()[repo]
         else:
             unreal.log_error("Could not load plugoon repositories")
     except:
