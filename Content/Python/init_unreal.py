@@ -1,4 +1,5 @@
 import unreal
+import PlugoonLibrary as lib
 
 @unreal.uclass()
 class EditorUtility(unreal.EditorUtilitySubsystem):
@@ -14,5 +15,8 @@ class PythonBridgeImplementation(unreal.PythonBridge):
 
     @unreal.ufunction(override=True)
     def get_plugoon_repositories(self):
-        unreal.log("Implement GetRepositories function")
-        return ['bla', 'bli', 'blub']
+        return lib.GetPlugoonRepo()
+
+    @unreal.ufunction(override=True)
+    def get_plugoon_repositories_details(self, repo):
+        return lib.GetPlugoonRepoDetails(repo)

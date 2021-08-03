@@ -15,4 +15,7 @@ public:
 	
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
 	TArray<FString> GetPlugoonRepositories();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
+	TMap<FString, FString> GetPlugoonRepositoriesDetails(const FString& Repo);
 };
