@@ -1,8 +1,12 @@
-[
-	{
+{
+	"TestRepoPrivate": {
 		"Organization": "Plugoon",
-		"Repository": "TestRepoPrivate",
 		"Author": "Veelos",
 		"Description": "Hier könnte eine Beschreibung stehen"
-	}	
-]
+	},
+	"ExampleRepo": {
+		"Organization": "Plugoon",
+		"Author": "Veelos",
+		"Description": "Hier könnte eine Beschreibung stehen"
+	}
+}
