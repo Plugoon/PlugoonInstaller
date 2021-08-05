@@ -20,3 +20,11 @@ class PythonBridgeImplementation(unreal.PythonBridge):
     @unreal.ufunction(override=True)
     def get_plugoon_repositories_details(self, repo):
         return lib.GetPlugoonRepoDetails(repo)
+
+    @unreal.ufunction(override=True)
+    def set_plugoon_token(self, token):
+        return lib.SetPrivateRepoToken(token)
+
+    @unreal.ufunction(override=True)
+    def get_plugoon_token(self):
+        return lib.GetPrivateRepoToken()

@@ -18,4 +18,10 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
 	TMap<FString, FString> GetPlugoonRepositoriesDetails(const FString& Repo);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
+    bool SetPlugoonToken(const FString& Token);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
+    FString GetPlugoonToken();
 };
