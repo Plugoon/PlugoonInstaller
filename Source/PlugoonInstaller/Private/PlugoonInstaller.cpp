@@ -47,7 +47,7 @@ void FPlugoonInstallerModule::ShutdownModule()
 void FPlugoonInstallerModule::PluginButtonClicked()
 {
 	UPythonBridge* Bridge = UPythonBridge::Get();
-	Bridge->FunctionImplementedInPython();
+	Bridge->StartInstaller();
 }
 
 void FPlugoonInstallerModule::RegisterMenus()

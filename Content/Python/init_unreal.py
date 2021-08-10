@@ -9,7 +9,12 @@ class EditorUtility(unreal.EditorUtilitySubsystem):
 class PythonBridgeImplementation(unreal.PythonBridge):
 
     @unreal.ufunction(override=True)
-    def function_implemented_in_python(self):
+    def test(self):
+        return lib.GetInstalledPlugins()
+
+
+    @unreal.ufunction(override=True)
+    def start_installer(self):
         PlugoonStartup = unreal.load_asset('/PlugoonInstaller/Widgets/PlugoonInstaller.PlugoonInstaller')
         EditorUtility().spawn_and_register_tab(PlugoonStartup)
 
@@ -28,3 +33,11 @@ class PythonBridgeImplementation(unreal.PythonBridge):
     @unreal.ufunction(override=True)
     def get_plugoon_token(self):
         return lib.GetPrivateRepoToken()
+
+    @unreal.ufunction(override=True)
+    def get_installed_plugins(self):
+        return lib.GetInstalledPlugins()
+
+    @unreal.ufunction(override=True)
+    def get_installed_plugin_details(self, handle):
+        return lib.GetInstalledPluginDetails(handle)

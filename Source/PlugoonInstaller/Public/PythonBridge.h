@@ -7,11 +7,14 @@ class UPythonBridge: public UObject
 {
 	GENERATED_BODY()
 public:
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
+    FString Test();
+	
 	UFUNCTION(BlueprintCallable, Category=Python)
 	static UPythonBridge* Get();
 
 	UFUNCTION(BlueprintImplementableEvent, Category=Python)
-	void FunctionImplementedInPython() const;
+	void StartInstaller() const;
 	
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
 	TArray<FString> GetPlugoonRepositories();
@@ -24,4 +27,10 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
     FString GetPlugoonToken();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
+    TArray<FString> GetInstalledPlugins();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
+    TMap<FString, FString> GetInstalledPluginDetails(const FString& Handle);
 };

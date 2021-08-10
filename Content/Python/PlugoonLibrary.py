@@ -1,6 +1,8 @@
+import json
 import unreal
 import requests
 import os
+import glob
 
 uri = "https://raw.githubusercontent.com/Plugoon/PlugoonInstaller/main/repositories.plugoon"
 secretsPath = f"{unreal.Paths.project_plugins_dir()}PlugoonInstaller/Secrets"
@@ -31,7 +33,6 @@ def GetPlugoonRepoDetails(repo):
 def SetPrivateRepoToken(token):
     unreal.log("Set private repo token")
     try:
-        file = "secrets.plugoon"
         if not os.path.exists(secretsPath):
             os.makedirs(secretsPath)
         with open(secretsFile, "w") as f:
@@ -48,3 +49,19 @@ def GetPrivateRepoToken():
             return f.read()
     except:
         unreal.log_error("Could not load token")
+
+def GetInstalledPlugins():
+    unreal.log("GetInstalledPlugins")
+    try:
+        result = []
+        files = glob.glob(f'{unreal.Paths.project_plugins_dir()}**/config.plugoon', recursive=True)
+        for file in files:
+            result.append(file)
+        return result
+    except:
+        unreal.log_error("Could not find installed plugins")
+
+def GetInstalledPluginDetails(handle):
+    unreal.log("GetInstalledPluginDetails")
+    with open(handle, "r") as f:
+        return json.loads(f.read())
