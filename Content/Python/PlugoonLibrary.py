@@ -62,6 +62,12 @@ def GetInstalledPlugins():
         unreal.log_error("Could not find installed plugins")
 
 def GetInstalledPluginDetails(handle):
-    unreal.log("GetInstalledPluginDetails")
+    unreal.log(f"GetInstalledPluginDetails for {handle}")
     with open(handle, "r") as f:
-        return json.loads(f.read())
+        result = json.loads(f.read())
+        try:
+            unreal.log(f"{GetInstalledPluginDetails.__name__}: remove dependencies from details")
+            del result["Dependencies"]
+        except:
+            unreal.log(f"{GetInstalledPluginDetails.__name__}: no dependencies in details")
+        return result
