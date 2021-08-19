@@ -33,4 +33,7 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
     TMap<FString, FString> GetInstalledPluginDetails(const FString& Handle);
+    
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
+    FString GetUnrealVersion();
 };

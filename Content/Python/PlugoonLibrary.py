@@ -5,6 +5,7 @@ import os
 import glob
 
 uri = "https://raw.githubusercontent.com/Plugoon/PlugoonInstaller/main/repositories.plugoon"
+githubApi = "https://api.github.com"
 secretsPath = f"{unreal.Paths.project_plugins_dir()}PlugoonInstaller/Secrets"
 secretsFile = f"{secretsPath}/secrets.plugoon"
 
@@ -71,3 +72,23 @@ def GetInstalledPluginDetails(handle):
         except:
             unreal.log(f"{GetInstalledPluginDetails.__name__}: no dependencies in details")
         return result
+
+def GetUnrealVersion():
+    unreal.log("GetUnrealVersion")
+    with open(unreal.Paths.get_project_file_path(), "r") as f:
+        result = json.loads(f.read())
+        return result["EngineAssociation"]
+
+def GetRepoTags(org: str, repo: str):
+    unreal.log(f"GetRepoTags for org: {org}, repo: {repo}")
+    try:
+        repoUrl = f"{githubApi}/repos/{org}/{repo}"
+        url = f"{repoUrl}/tags"
+        response = requests.get(url)
+        if response.status_code == 200:
+            unreal.log(response.json())
+        else:
+            unreal.log_error("Could not load plugoon repositories")
+    except:
+        unreal.log_error("Networking error")
+    return "nothing"

@@ -10,8 +10,7 @@ class PythonBridgeImplementation(unreal.PythonBridge):
 
     @unreal.ufunction(override=True)
     def test(self):
-        return lib.GetInstalledPlugins()
-
+        unreal.log("Test")
 
     @unreal.ufunction(override=True)
     def start_installer(self):
@@ -41,3 +40,7 @@ class PythonBridgeImplementation(unreal.PythonBridge):
     @unreal.ufunction(override=True)
     def get_installed_plugin_details(self, handle):
         return lib.GetInstalledPluginDetails(handle)
+
+    @unreal.ufunction(override=True)
+    def get_unreal_version(self):
+        return lib.GetUnrealVersion()
