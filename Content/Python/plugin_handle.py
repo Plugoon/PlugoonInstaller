@@ -1,21 +1,29 @@
 import unreal
 import requests
 
+
 class PluginHandle:
-    __repoUri = "https://raw.githubusercontent.com/Plugoon/PlugoonInstaller/main/repositories.plugoon"
-    
+    _repoUri: str = "https://raw.githubusercontent.com/Plugoon/PlugoonInstaller/main/repositories.plugoon"
+    handle: str
+    org: str
+    author: str
+    description: str
+
     def __init__(self, handle: str) -> None:
         self.handle = handle
-        if not self.__loadHandle():
+        if not self._load_handle():
             raise Exception("Could not create PluginHandle")
 
-    def __loadHandle(self) -> bool:
+    def _load_handle(self) -> bool:
         try:
-            response = requests.get(self.__repoUri)
+            response = requests.get(self._repoUri)
             if response.status_code == 200:
                 for handle in response.json().keys():
                     if self.handle == handle:
-                        self.details = response.json()[handle]
+                        self.org = response.json()[handle]["Organization"]
+                        self.author = response.json()[handle]["Author"]
+                        self.description = response.json()[
+                            handle]["Description"]
                         return True
                 unreal.log_warning(f"Handle: {self.handle} doesent exist")
             else:
@@ -25,4 +33,6 @@ class PluginHandle:
             unreal.log_warning("Networking error")
             return False
 
-handle = PluginHandle("blabla")
+# Todo: remove
+handle = PluginHandle("ExampleRepo")
+print(handle.author, handle.description, handle.org)
