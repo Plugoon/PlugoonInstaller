@@ -3,14 +3,14 @@ import requests
 from version import Version
 
 class Repository:
-    _org: str
-    _repo: str
+    org: str
+    name: str
     _version: str
     _repo_url: str
 
     def __init__(self, org: str, repo: str, version: str) -> None:
-        self._org = org
-        self._repo = repo
+        self.org = org
+        self.name = repo
         self._version = version
         self._repo_url = f"https://api.github.com/repos/{org}/{repo}/tags"
         if not self._version_check():
@@ -29,7 +29,7 @@ class Repository:
             try: 
                 versions.append(Version(entry["name"]))
             except:
-                unreal.log(f"Ignore incompatible version tag {entry['name']} in repo: {self._repo}")
+                unreal.log(f"Ignore incompatible version tag {entry['name']} in repo: {self.name}")
         for v in versions:
             if v.version_unreal == self._version:
                 return True    

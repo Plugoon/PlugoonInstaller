@@ -5,12 +5,12 @@ import os
 import glob
 from plugin_handle import PluginHandle
 
-uri = "https://raw.githubusercontent.com/Plugoon/PlugoonInstaller/main/repositories.plugoon"
 githubApi = "https://api.github.com"
+uri = f"{githubApi}/orgs/Plugoon/repos"
 secretsPath = f"{unreal.Paths.project_plugins_dir()}PlugoonInstaller/Secrets"
 secretsFile = f"{secretsPath}/secrets.plugoon"
 
-def GetMaatchingPlugoonRepos():
+def GetMatchingPlugoonRepos():
     unreal.log("Get plugoon repositries...")
     try:
         response = requests.get(uri)

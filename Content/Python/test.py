@@ -1,4 +1,5 @@
-import PlugoonLibrary as lib
+import unreal
+import github
 
-for repo in lib.GetMaatchingPlugoonRepos():
-    print(repo)
+result = github.get_matching_plugoon_repos()
+unreal.log()

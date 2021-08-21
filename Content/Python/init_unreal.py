@@ -19,7 +19,7 @@ class PythonBridgeImplementation(unreal.PythonBridge):
 
     @unreal.ufunction(override=True)
     def get_matching_plugoon_repositories(self):
-        return lib.GetMaatchingPlugoonRepos()
+        return lib.GetMatchingPlugoonRepos()
 
     @unreal.ufunction(override=True)
     def get_plugoon_repository_details(self, repo):
