@@ -8,5 +8,10 @@
 		"Organization": "Plugoon",
 		"Author": "Veelos",
 		"Description": "Hier könnte eine Beschreibung stehen"
+	},
+	"TestRepoPublic": {
+		"Organization": "Plugoon",
+		"Author": "Veelos",
+		"Description": "Hier könnte eine Beschreibung stehen"
 	}
 }
