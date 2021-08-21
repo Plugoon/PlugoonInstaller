@@ -17,10 +17,10 @@ public:
 	void StartInstaller() const;
 	
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
-	TArray<FString> GetPlugoonRepositories();
+	TArray<FString> GetMatchingPlugoonRepositories();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
-	TMap<FString, FString> GetPlugoonRepositoriesDetails(const FString& Repo);
+	TMap<FString, FString> GetPlugoonRepositoryDetails(const FString& Repo);
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
     bool SetPlugoonToken(const FString& Token);

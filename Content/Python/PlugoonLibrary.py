@@ -3,18 +3,25 @@ import unreal
 import requests
 import os
 import glob
+from plugin_handle import PluginHandle
 
 uri = "https://raw.githubusercontent.com/Plugoon/PlugoonInstaller/main/repositories.plugoon"
 githubApi = "https://api.github.com"
 secretsPath = f"{unreal.Paths.project_plugins_dir()}PlugoonInstaller/Secrets"
 secretsFile = f"{secretsPath}/secrets.plugoon"
 
-def GetPlugoonRepo():
+def GetMaatchingPlugoonRepos():
     unreal.log("Get plugoon repositries...")
     try:
         response = requests.get(uri)
         if response.status_code == 200:
-            return response.json().keys()
+            result: list[str] = []
+            for key in response.json().keys():
+                try:
+                    result.append(PluginHandle(key).repo_name)
+                except:
+                    pass
+            return result
         else:
             unreal.log_error("Could not load plugoon repositories")
     except:

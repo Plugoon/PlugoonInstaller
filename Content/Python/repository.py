@@ -20,7 +20,6 @@ class Repository:
         try:
             response = requests.get(self._repo_url)
             if response.status_code != 200:
-                unreal.log_warning("could not load repo tags")
                 return False
         except:
             unreal.log_warning("Networking error")
@@ -37,4 +36,4 @@ class Repository:
         return False 
 
 # todo: remove
-Repository("Plugoon", "TestRepoPublic", "4.26")
+Repository("Plugoon", "TestRepoPublic", "5.0")

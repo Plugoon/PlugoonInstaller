@@ -18,11 +18,11 @@ class PythonBridgeImplementation(unreal.PythonBridge):
         EditorUtility().spawn_and_register_tab(PlugoonStartup)
 
     @unreal.ufunction(override=True)
-    def get_plugoon_repositories(self):
-        return lib.GetPlugoonRepo()
+    def get_matching_plugoon_repositories(self):
+        return lib.GetMaatchingPlugoonRepos()
 
     @unreal.ufunction(override=True)
-    def get_plugoon_repositories_details(self, repo):
+    def get_plugoon_repository_details(self, repo):
         return lib.GetPlugoonRepoDetails(repo)
 
     @unreal.ufunction(override=True)
