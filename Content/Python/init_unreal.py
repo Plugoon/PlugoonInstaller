@@ -1,5 +1,6 @@
 import unreal
 import PlugoonLibrary as lib
+import github as git
 
 @unreal.uclass()
 class EditorUtility(unreal.EditorUtilitySubsystem):
@@ -19,11 +20,11 @@ class PythonBridgeImplementation(unreal.PythonBridge):
 
     @unreal.ufunction(override=True)
     def get_matching_plugoon_repositories(self):
-        return lib.GetMatchingPlugoonRepos()
+        return git.get_matching_plugoon_repos().keys()
 
     @unreal.ufunction(override=True)
     def get_plugoon_repository_details(self, repo):
-        return lib.GetPlugoonRepoDetails(repo)
+        return git.get_matching_plugoon_repos()[repo]
 
     @unreal.ufunction(override=True)
     def set_plugoon_token(self, token):

@@ -32,6 +32,3 @@ def get_matching_repos(org: str):
         return result
     except:
         unreal.log_error("Networking error")
-
-# todo remove
-unreal.log(get_matching_plugoon_repos())

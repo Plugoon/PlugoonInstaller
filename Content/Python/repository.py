@@ -34,6 +34,3 @@ class Repository:
             if v.version_unreal == self._version:
                 return True    
         return False 
-
-# todo: remove
-Repository("Plugoon", "TestRepoPublic", "5.0")

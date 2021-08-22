@@ -39,6 +39,3 @@ class PluginHandle:
             unreal.log_warning("Networking error")
             return False
 
-# Todo: remove
-handle = PluginHandle("TestRepoPublic")
-print(handle.author, handle.description, handle.org)
