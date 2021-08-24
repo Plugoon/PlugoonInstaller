@@ -2,7 +2,7 @@ from datetime import datetime
 import unreal
 import PlugoonLibrary as lib
 from organization import Organization
-import utils
+import plugin
 
 @unreal.uclass()
 class EditorUtility(unreal.EditorUtilitySubsystem):
@@ -36,14 +36,6 @@ class PythonBridgeImplementation(unreal.PythonBridge):
     @unreal.ufunction(override=True)
     def get_plugoon_token(self):
         return lib.GetPrivateRepoToken()
-
-    @unreal.ufunction(override=True)
-    def get_installed_plugins(self):
-        return lib.GetInstalledPlugins()
-
-    @unreal.ufunction(override=True)
-    def get_installed_plugin_details(self, handle):
-        return lib.GetInstalledPluginDetails(handle)
 
     @unreal.ufunction(override=True)
     def get_unreal_version(self):
