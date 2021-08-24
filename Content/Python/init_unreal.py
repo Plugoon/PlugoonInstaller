@@ -1,3 +1,4 @@
+from datetime import datetime
 import unreal
 import PlugoonLibrary as lib
 from organization import Organization
@@ -22,12 +23,11 @@ class PythonBridgeImplementation(unreal.PythonBridge):
     @unreal.ufunction(override=True)
     def get_matching_plugoon_repositories(self):
         org = Organization("Plugoon").get_matching_repos()
-        utils.save_organization_details(org)
-        return org.data.keys()
+        return org["data"].keys()
 
     @unreal.ufunction(override=True)
     def get_plugoon_repository_details(self, repo):
-        return Organization("Plugoon").get_matching_repos()[repo]
+        return Organization("Plugoon").get_matching_repos()["data"][repo]
 
     @unreal.ufunction(override=True)
     def set_plugoon_token(self, token):
