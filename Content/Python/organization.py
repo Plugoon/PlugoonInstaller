@@ -57,7 +57,7 @@ class Organization:
             
 
     def _save(self, data) -> None:
-        utils.log("organization", "_save")
+        utils.log("Organization", "_save")
         json_string = json.dumps(data, indent=4, separators=(',', ': '))
         try:
             if not os.path.exists(self._temp_path):

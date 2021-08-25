@@ -1,9 +1,11 @@
 import json
+from organization import Organization
 import unreal
 import requests
 import os
-import glob
 from plugin_handle import PluginHandle
+from plugin import Plugin
+import utils
 
 githubApi = "https://api.github.com"
 uri = f"{githubApi}/orgs/Plugoon/repos"
@@ -27,7 +29,7 @@ def GetMatchingPlugoonRepos():
     except:
         unreal.log_error("Networking error")
 
-def GetPlugoonRepoDetails(repo):
+def GetPlugoonRepoDetails(repo: str):
     unreal.log(f"GetPlugoonRepoDetails for {repo}")
     try:
         response = requests.get(uri)
@@ -38,7 +40,7 @@ def GetPlugoonRepoDetails(repo):
     except:
         unreal.log_error("Networking error")
 
-def SetPrivateRepoToken(token):
+def SetPrivateRepoToken(token: str):
     unreal.log("Set private repo token")
     try:
         if not os.path.exists(secretsPath):
@@ -58,27 +60,16 @@ def GetPrivateRepoToken():
     except:
         unreal.log_error("Could not load token")
 
-def GetInstalledPlugins():
-    unreal.log("GetInstalledPlugins")
+def install_plugin(handle: str) -> bool:
+    repo: str = ''
     try:
-        result = []
-        files = glob.glob(f'{unreal.Paths.project_plugins_dir()}**/config.plugoon', recursive=True)
-        for file in files:
-            result.append(file)
-        return result
+        repo = Organization("Plugoon").get_matching_repos()["data"][handle]
     except:
-        unreal.log_error("Could not find installed plugins")
-
-def GetInstalledPluginDetails(handle):
-    unreal.log(f"GetInstalledPluginDetails for {handle}")
-    with open(handle, "r") as f:
-        result = json.loads(f.read())
-        try:
-            unreal.log(f"{GetInstalledPluginDetails.__name__}: remove dependencies from details")
-            del result["Dependencies"]
-        except:
-            unreal.log(f"{GetInstalledPluginDetails.__name__}: no dependencies in details")
-        return result
+        utils.log_error("install_plugin", f"plugin {handle} doesent exist")
+        return False
+    for plug in Plugin.get_installed_plugins():
+        if handle == plug.name:
+            unreal.log_warning(f"Plugin {handle} is allready installed")
 
 def GetUnrealVersion():
     unreal.log("GetUnrealVersion")
@@ -99,3 +90,4 @@ def GetRepoTags(org: str, repo: str):
     except:
         unreal.log_error("Networking error")
     return "nothing"
+
