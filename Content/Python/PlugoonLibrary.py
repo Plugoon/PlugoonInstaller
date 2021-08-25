@@ -4,7 +4,7 @@ import unreal
 import requests
 import os
 from plugin_handle import PluginHandle
-import plugin
+from plugin import Plugin
 import utils
 
 githubApi = "https://api.github.com"
@@ -29,7 +29,7 @@ def GetMatchingPlugoonRepos():
     except:
         unreal.log_error("Networking error")
 
-def GetPlugoonRepoDetails(repo):
+def GetPlugoonRepoDetails(repo: str):
     unreal.log(f"GetPlugoonRepoDetails for {repo}")
     try:
         response = requests.get(uri)
@@ -40,7 +40,7 @@ def GetPlugoonRepoDetails(repo):
     except:
         unreal.log_error("Networking error")
 
-def SetPrivateRepoToken(token):
+def SetPrivateRepoToken(token: str):
     unreal.log("Set private repo token")
     try:
         if not os.path.exists(secretsPath):
@@ -67,7 +67,7 @@ def install_plugin(handle: str) -> bool:
     except:
         utils.log_error("install_plugin", f"plugin {handle} doesent exist")
         return False
-    for plug in plugin.get_installed_plugins():
+    for plug in Plugin.get_installed_plugins():
         if handle == plug.name:
             unreal.log_warning(f"Plugin {handle} is allready installed")
 
@@ -91,4 +91,3 @@ def GetRepoTags(org: str, repo: str):
         unreal.log_error("Networking error")
     return "nothing"
 
-install_plugin("ExamplePlugin")
