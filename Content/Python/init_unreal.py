@@ -1,5 +1,7 @@
+from tokenize import Token
 import unreal
 import PlugoonLibrary as lib
+import TokenLib
 from organization import Organization
 
 @unreal.uclass()
@@ -20,21 +22,14 @@ class PythonBridgeImplementation(unreal.PythonBridge):
         EditorUtility().spawn_and_register_tab(PlugoonStartup)
 
     @unreal.ufunction(override=True)
-    def get_matching_plugoon_repositories(self):
-        org = Organization("Plugoon").get_matching_repos()
-        return org["data"].keys()
+    def set_tokens(self, idToken, accessToken):
+        idToken = TokenLib.setIdToken(idToken)
+        accessToken = TokenLib.setAccessToken(accessToken)
+        return (idToken & accessToken)
 
     @unreal.ufunction(override=True)
-    def get_plugoon_repository_details(self, repo):
-        return Organization("Plugoon").get_matching_repos()["data"][repo]
-
-    @unreal.ufunction(override=True)
-    def set_plugoon_token(self, token):
-        return lib.SetPrivateRepoToken(token)
-
-    @unreal.ufunction(override=True)
-    def get_plugoon_token(self):
-        return lib.GetPrivateRepoToken()
+    def get_tokens(self):
+        return TokenLib.getTokens()
 
     @unreal.ufunction(override=True)
     def get_unreal_version(self):

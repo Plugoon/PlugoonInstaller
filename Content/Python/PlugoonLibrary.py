@@ -7,38 +7,10 @@ from plugin_handle import PluginHandle
 from plugin import Plugin
 import utils
 
-githubApi = "https://api.github.com"
-uri = f"{githubApi}/orgs/Plugoon/repos"
 secretsPath = f"{unreal.Paths.project_plugins_dir()}PlugoonInstaller/Secrets"
-secretsFile = f"{secretsPath}/secrets.plugoon"
+accessToken = f"{secretsPath}/accessToken.plugoon"
+idToken = f"{secretsPath}/idToken.plugoon"
 
-def GetMatchingPlugoonRepos():
-    unreal.log("Get plugoon repositries...")
-    try:
-        response = requests.get(uri)
-        if response.status_code == 200:
-            result: list[str] = []
-            for key in response.json().keys():
-                try:
-                    result.append(PluginHandle(key).repo_name)
-                except:
-                    pass
-            return result
-        else:
-            unreal.log_error("Could not load plugoon repositories")
-    except:
-        unreal.log_error("Networking error")
-
-def GetPlugoonRepoDetails(repo: str):
-    unreal.log(f"GetPlugoonRepoDetails for {repo}")
-    try:
-        response = requests.get(uri)
-        if response.status_code == 200:
-            return response.json()[repo]
-        else:
-            unreal.log_error("Could not load plugoon repositories")
-    except:
-        unreal.log_error("Networking error")
 
 def SetPrivateRepoToken(token: str):
     unreal.log("Set private repo token")

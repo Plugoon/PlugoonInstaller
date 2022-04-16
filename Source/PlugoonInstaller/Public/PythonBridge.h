@@ -1,5 +1,7 @@
 ﻿#pragma once
 #include "Engine.h"
+#include "Models/PlugoonTokens.h"
+
 #include "PythonBridge.generated.h"
 
 UCLASS(Blueprintable)
@@ -15,24 +17,12 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category=Python)
 	void StartInstaller() const;
-	
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
-	TArray<FString> GetMatchingPlugoonRepositories();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
-	TMap<FString, FString> GetPlugoonRepositoryDetails(const FString& Repo);
+	void SetTokens(const FString& IdToken, const FString& AccessToken);
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
-    bool SetPlugoonToken(const FString& Token);
-
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
-    FString GetPlugoonToken();
-
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
-    TArray<FString> GetInstalledPlugins();
-
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
-    TMap<FString, FString> GetInstalledPluginDetails(const FString& Handle);
+	FPlugoonTokens GetTokens();
     
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
     FString GetUnrealVersion();
