@@ -13,6 +13,7 @@ class PythonBridgeImplementation(unreal.PythonBridge):
     def test(self):
         unreal.log("Test")
 
+    # Editor startup function
     @unreal.ufunction(override=True)
     def start_installer(self):
         PlugoonStartup = unreal.load_asset('/PlugoonInstaller/Widgets/PlugoonInstaller.PlugoonInstaller')
