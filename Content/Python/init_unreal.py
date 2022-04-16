@@ -1,8 +1,7 @@
-from tokenize import Token
 import unreal
-import PlugoonLibrary as lib
+import utils
 import TokenLib
-from organization import Organization
+import backend
 
 @unreal.uclass()
 class EditorUtility(unreal.EditorUtilitySubsystem):
@@ -14,6 +13,9 @@ class PythonBridgeImplementation(unreal.PythonBridge):
     @unreal.ufunction(override=True)
     def test(self):
         unreal.log("Test")
+        backend.test()
+        return ""
+
 
     # Editor startup function
     @unreal.ufunction(override=True)
@@ -33,4 +35,4 @@ class PythonBridgeImplementation(unreal.PythonBridge):
 
     @unreal.ufunction(override=True)
     def get_unreal_version(self):
-        return lib.GetUnrealVersion()
+        return utils.get_unreal_version()
