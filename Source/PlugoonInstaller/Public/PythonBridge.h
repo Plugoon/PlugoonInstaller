@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "Engine.h"
-#include "Models/PlugoonTokens.h"
+#include "Models.h"
 
 #include "PythonBridge.generated.h"
 
@@ -26,4 +26,55 @@ public:
     
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
     FString GetUnrealVersion();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
+	TArray<FPlugoonRepo> GetRepos();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
+	FPlugoonRepo AddRepo(const FString& Name, const FString& Description);
+	
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
+	FPlugoonRepo UpdateRepo(const FString& Name, const FString& Description);
+	
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
+	void DeleteRepo(const FString& Name);
+	
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
+	TArray<FPlugoonPackage> GetPackages(const FString& Name);
+	
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
+	FPlugoonPackage AddPackage(
+		const FString& Name,
+		const FString& PackageVersion,
+		const FString& Url,
+		const TArray<FString>& Dependencies
+	);
+	
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
+	FPlugoonPackage GetPackage(const FString& Name, const FString& PackageId);
+	
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
+	FPlugoonPackage UpdatePackage(
+		const FString& Name,
+		const FString& PackageId,
+		const FString& Url
+	);
+	
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
+	FPlugoonPackage DeprecatePackage(
+		const FString& Name,
+		const FString& PackageId
+	);
+	
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
+	void DeletePackage(
+		const FString& Name,
+		const FString& PackageId
+	);
+	
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)	
+	TArray<FPlugoonPackage> GetInstallList(
+		const FString& Name,
+		const FString& PackageId
+	);
 };

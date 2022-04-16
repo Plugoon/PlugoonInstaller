@@ -1,7 +1,7 @@
 import unreal
 import utils
 import TokenLib
-import backend
+import requests
 
 @unreal.uclass()
 class EditorUtility(unreal.EditorUtilitySubsystem):
@@ -13,7 +13,6 @@ class PythonBridgeImplementation(unreal.PythonBridge):
     @unreal.ufunction(override=True)
     def test(self):
         unreal.log("Test")
-        backend.test()
         return ""
 
 
@@ -36,3 +35,7 @@ class PythonBridgeImplementation(unreal.PythonBridge):
     @unreal.ufunction(override=True)
     def get_unreal_version(self):
         return utils.get_unreal_version()
+
+    @unreal.ufunction(override=True)
+    def get_repos(self):
+        return requests.get_repos()
