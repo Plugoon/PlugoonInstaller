@@ -1,4 +1,4 @@
-from urllib import request
+from typing import overload
 import unreal
 import utils
 import TokenLib
@@ -56,3 +56,23 @@ class PythonBridgeImplementation(unreal.PythonBridge):
     @unreal.ufunction(override=True)
     def get_packages(self, name):
         return requests.get_packages(name)
+
+    @unreal.ufunction(override=True)
+    def add_package(self, name, ue_version, package_version, url, dependencies):
+        return requests.add_package(name, ue_version, package_version, url, dependencies)
+
+    @unreal.ufunction(override=True)
+    def get_package(self, name, package_id):
+        return requests.get_package(name, package_id)
+
+    @unreal.ufunction(override=True)
+    def update_package(self, name, package_id, url):
+        return requests.update_package(name, package_id, url)
+
+    @unreal.ufunction(override=True)
+    def deprecate_package(self, name, package_id):
+        return requests.deprecate_package(name, package_id)
+
+    @unreal.ufunction(override=True)
+    def delete_package(self, name, package_id):
+        return requests.delete_package(name, package_id)

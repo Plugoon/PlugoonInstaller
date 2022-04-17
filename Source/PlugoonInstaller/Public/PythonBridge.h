@@ -45,6 +45,7 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
 	FPlugoonPackageResponse AddPackage(
 		const FString& Name,
+		const FString& UeVersion,
 		const FString& PackageVersion,
 		const FString& Url,
 		const TArray<FString>& Dependencies
