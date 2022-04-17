@@ -52,3 +52,7 @@ class PythonBridgeImplementation(unreal.PythonBridge):
     @unreal.ufunction(override=True)
     def delete_repo(self, name):
         return requests.delete_repo(name)
+
+    @unreal.ufunction(override=True)
+    def get_packages(self, name):
+        return requests.get_packages(name)

@@ -1,5 +1,6 @@
 import http.client
 from os import stat
+from struct import pack
 import TokenLib
 import utils
 import json
@@ -132,6 +133,7 @@ def delete_repo(name: str):
     data = res.read()
     if res.status == 204:
         return unreal.PlugoonError()
+    utils.log_error("delete_repo", "failed to update Repo")
     if res.status == 401 or res.status == 403:
         return unreal.PlugoonError(
             has_error=True,
@@ -146,3 +148,44 @@ def delete_repo(name: str):
             has_error=True,
             message=f"Unknown error: {res.status}"
         )
+
+def get_packages(name: str):
+    utils.log("get_packages", "started...")
+    token = TokenLib.getAccessToken()
+    conn = http.client.HTTPSConnection("plugoon.azure-api.net")
+    payload = ''
+    headers = {
+        'Authorization': f'Bearer {token}'
+    }
+    conn.request("GET", f"/api/repo/{name}/package", payload, headers)
+    res = conn.getresponse()
+    data = res.read()
+    if res.status == 200:
+        packages = json.loads(data.decode("utf-8"))
+        result = []
+        for package in packages:
+            result.append(unreal.PlugoonPackage(
+                id=package["id"],
+                repo_name=package["repoName"],
+                package_version=package["packageVersion"],
+                ue_version=package["ueVersion"],
+                deprecated=package["deprecated"],
+                url=package["url"],
+                dependencies=package["dependencies"]
+            ))
+        return unreal.PlugoonPackagesResponse(packages=result)
+    if res.status == 401 or res.status == 403:
+        return unreal.PlugoonPackagesResponse(error=unreal.PlugoonError(
+            has_error=True,
+            message="Invalid access token"
+        ))
+    if res.status == 404:
+        return unreal.PlugoonPackagesResponse(error=unreal.PlugoonError(
+            has_error=True,
+            message=f"Repo: {name} not found"
+        ))
+    return unreal.PlugoonPackagesResponse(error=unreal.PlugoonError(
+        has_error=True,
+        message="Unknown error"
+    ))
+    
