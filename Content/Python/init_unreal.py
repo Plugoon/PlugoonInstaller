@@ -39,3 +39,7 @@ class PythonBridgeImplementation(unreal.PythonBridge):
     @unreal.ufunction(override=True)
     def get_repos(self):
         return requests.get_repos()
+
+    @unreal.ufunction(override=True)
+    def add_repo(self, name, description):
+        return requests.add_repo(name, description)

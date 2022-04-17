@@ -31,19 +31,19 @@ public:
 	TArray<FPlugoonRepo> GetRepos();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
-	FPlugoonRepo AddRepo(const FString& Name, const FString& Description);
+	FPlugoonRepoResponse AddRepo(const FString& Name, const FString& Description);
 	
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
-	FPlugoonRepo UpdateRepo(const FString& Name, const FString& Description);
+	FPlugoonRepoResponse UpdateRepo(const FString& Name, const FString& Description);
 	
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
 	void DeleteRepo(const FString& Name);
 	
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
-	TArray<FPlugoonPackage> GetPackages(const FString& Name);
+	FPlugoonPackagesResponse GetPackages(const FString& Name);
 	
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
-	FPlugoonPackage AddPackage(
+	FPlugoonPackageResponse AddPackage(
 		const FString& Name,
 		const FString& PackageVersion,
 		const FString& Url,
@@ -51,17 +51,17 @@ public:
 	);
 	
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
-	FPlugoonPackage GetPackage(const FString& Name, const FString& PackageId);
+	FPlugoonPackageResponse GetPackage(const FString& Name, const FString& PackageId);
 	
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
-	FPlugoonPackage UpdatePackage(
+	FPlugoonPackageResponse UpdatePackage(
 		const FString& Name,
 		const FString& PackageId,
 		const FString& Url
 	);
 	
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
-	FPlugoonPackage DeprecatePackage(
+	FPlugoonPackageResponse DeprecatePackage(
 		const FString& Name,
 		const FString& PackageId
 	);
@@ -73,7 +73,7 @@ public:
 	);
 	
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)	
-	TArray<FPlugoonPackage> GetInstallList(
+	FPlugoonPackagesResponse GetInstallList(
 		const FString& Name,
 		const FString& PackageId
 	);

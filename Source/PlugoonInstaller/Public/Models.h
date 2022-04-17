@@ -63,3 +63,63 @@ struct FPlugoonPackage
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Plugoon)
 	TArray<FString> Dependencies;
 };
+
+USTRUCT(BlueprintType)
+struct FPlugoonError
+{
+	GENERATED_BODY();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Plugoon)
+	bool HasError;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Plugoon)
+	FString Message;
+};
+
+USTRUCT(BlueprintType)
+struct FPlugoonRepoResponse
+{
+	GENERATED_BODY();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Plugoon)
+	FPlugoonError Error;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Plugoon)
+	FPlugoonRepo Repo;
+};
+
+USTRUCT(BlueprintType)
+struct FPlugoonPackageResponse
+{
+	GENERATED_BODY();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Plugoon)
+	FPlugoonError Error;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Plugoon)
+	FPlugoonPackage Package;
+};
+
+USTRUCT(BlueprintType)
+struct FPlugoonReposResponse
+{
+	GENERATED_BODY();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Plugoon)
+	FPlugoonError Error;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Plugoon)
+	TArray<FPlugoonRepo> Repos;
+};
+
+USTRUCT(BlueprintType)
+struct FPlugoonPackagesResponse
+{
+	GENERATED_BODY();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Plugoon)
+	FPlugoonError Error;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Plugoon)
+	TArray<FPlugoonPackage> Packages;
+};
