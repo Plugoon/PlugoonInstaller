@@ -142,6 +142,11 @@ def delete_repo(name: str):
             has_error=True,
             message=f"Repo: {name} does not exist"
         )
+    if res.status == 409:
+        return unreal.PlugoonError(
+            has_error=True,
+            message=f"Repo: {name} still has packages -> delete packages first"
+        )
     return unreal.PlugoonError(
             has_error=True,
             message=f"Unknown error: {res.status}"
@@ -357,7 +362,7 @@ def deprecate_package(name: str, packageId: str):
     ))
 
 def delete_package(name: str, packageId: str):
-    utils.log("deprecate_package", "started...")
+    utils.log("delete_package", "started...")
     token = TokenLib.getAccessToken()
     conn = http.client.HTTPSConnection("plugoon.azure-api.net")
     payload = ''
@@ -383,4 +388,43 @@ def delete_package(name: str, packageId: str):
         has_error=True,
         message=f"Unknown error: {res.status}"
     )
-    
+
+def get_install_list(name: str, packageId: str):
+    utils.log("get_install_list", "started...")
+    token = TokenLib.getAccessToken()
+    conn = http.client.HTTPSConnection("plugoon.azure-api.net")
+    payload = ''
+    headers = {
+        'Authorization': f'Bearer {token}'
+    }
+    conn.request("GET", f"/api/repo/{name}/package/{packageId}/install", payload, headers)
+    res = conn.getresponse()
+    data = res.read()
+    if res.status == 200:
+        packages = json.loads(data.decode("utf-8"))
+        result = []
+        for package in packages:
+            result.append(unreal.PlugoonPackage(
+                id=package["id"],
+                repo_name=package["repoName"],
+                package_version=package["packageVersion"],
+                ue_version=package["ueVersion"],
+                deprecated=package["deprecated"],
+                url=package["url"],
+                dependencies=package["dependencies"]
+            ))
+        return unreal.PlugoonPackagesResponse(packages=result)
+    if res.status == 401 or res.status == 403:
+        return unreal.PlugoonPackagesResponse(error=unreal.PlugoonError(
+            has_error=True,
+            message="Invalid access token"
+        ))
+    if res.status == 404:
+        return unreal.PlugoonPackagesResponse(error=unreal.PlugoonError(
+            has_error=True,
+            message=f"Package: {packageId} not found on repo {name}"
+        ))
+    return unreal.PlugoonPackagesResponse(error=unreal.PlugoonError(
+        has_error=True,
+        message="Unknown error"
+    ))

@@ -76,3 +76,7 @@ class PythonBridgeImplementation(unreal.PythonBridge):
     @unreal.ufunction(override=True)
     def delete_package(self, name, package_id):
         return requests.delete_package(name, package_id)
+
+    @unreal.ufunction(override=True)
+    def get_install_list(self, name, package_id):
+        return requests.get_install_list(name, package_id)
