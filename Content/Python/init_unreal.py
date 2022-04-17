@@ -1,3 +1,4 @@
+from urllib import request
 import unreal
 import utils
 import TokenLib
@@ -43,3 +44,11 @@ class PythonBridgeImplementation(unreal.PythonBridge):
     @unreal.ufunction(override=True)
     def add_repo(self, name, description):
         return requests.add_repo(name, description)
+
+    @unreal.ufunction(override=True)
+    def update_repo(self, name, description):
+        return requests.update_repo(name, description)
+
+    @unreal.ufunction(override=True)
+    def delete_repo(self, name):
+        return requests.delete_repo(name)

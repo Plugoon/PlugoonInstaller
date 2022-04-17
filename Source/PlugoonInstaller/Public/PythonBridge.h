@@ -28,7 +28,7 @@ public:
     FString GetUnrealVersion();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
-	TArray<FPlugoonRepo> GetRepos();
+	FPlugoonReposResponse GetRepos();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
 	FPlugoonRepoResponse AddRepo(const FString& Name, const FString& Description);
@@ -37,7 +37,7 @@ public:
 	FPlugoonRepoResponse UpdateRepo(const FString& Name, const FString& Description);
 	
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
-	void DeleteRepo(const FString& Name);
+	FPlugoonError DeleteRepo(const FString& Name);
 	
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
 	FPlugoonPackagesResponse GetPackages(const FString& Name);
@@ -67,7 +67,7 @@ public:
 	);
 	
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
-	void DeletePackage(
+	FPlugoonError DeletePackage(
 		const FString& Name,
 		const FString& PackageId
 	);

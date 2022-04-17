@@ -27,10 +27,16 @@ def get_repos():
                 ue_versions=repo["ueVersions"],
                 packages=repo["packages"]
             ))
-        return result
-    else:
-        utils.log_error("get_repos", "repos not found")
-        return []
+        return unreal.PlugoonReposResponse(repos=result)
+    if res.status == 401 or res.status == 403:
+        return unreal.PlugoonReposResponse(error=unreal.PlugoonError(
+            has_error=True,
+            message="Invalid access token"
+        ))
+    return unreal.PlugoonReposResponse(error=unreal.PlugoonError(
+        has_error=True,
+        message="Unknown error"
+    ))
 
 def add_repo(name: str, description: str):
     utils.log("add_repos", "started...")
@@ -72,3 +78,71 @@ def add_repo(name: str, description: str):
             has_error=True,
             message=f"Unknown error: {res.status}"
         ))
+
+def update_repo(name: str, description: str):
+    utils.log("update_repo", "started...")
+    token = TokenLib.getAccessToken()
+    conn = http.client.HTTPSConnection("plugoon.azure-api.net")
+    payload = json.dumps({
+        'description': description
+    })
+    headers = {
+        'Authorization': f'Bearer {token}',
+        'Content-Type': 'application/json'
+    }
+    conn.request("PUT", f"/api/repo/{name}", payload, headers)
+    res = conn.getresponse()
+    data = res.read()
+    result = json.loads(data.decode('utf-8'))
+    if res.status == 200:
+        return unreal.PlugoonRepoResponse(repo=unreal.PlugoonRepo(
+            name=result["name"],
+            owner=result["owner"],
+            description=result["description"],
+            packages=result["packages"],
+            ue_versions=result["ueVersions"]
+        ))
+        
+    utils.log_error("update_repo", "failed to update Repo")
+    if res.status == 401 or res.status == 403:
+        return unreal.PlugoonRepoResponse(error=unreal.PlugoonError(
+            has_error=True,
+            message="Invalid access token"
+        ))
+    if res.status == 404:
+        return unreal.PlugoonRepoResponse(error=unreal.PlugoonError(
+            has_error=True,
+            message=f"Repo: {name} does not exist"
+        ))
+    return unreal.PlugoonRepoResponse(error=unreal.PlugoonError(
+            has_error=True,
+            message=f"Unknown error: {res.status}"
+        ))
+
+def delete_repo(name: str):
+    utils.log("delete_repo", "started...")
+    token = TokenLib.getAccessToken()
+    conn = http.client.HTTPSConnection("plugoon.azure-api.net")
+    payload = ''
+    headers = {
+        'Authorization': f'Bearer {token}'
+    }
+    conn.request("DELETE", f"/api/repo/{name}", payload, headers)
+    res = conn.getresponse()
+    data = res.read()
+    if res.status == 204:
+        return unreal.PlugoonError()
+    if res.status == 401 or res.status == 403:
+        return unreal.PlugoonError(
+            has_error=True,
+            message="Invalid access token"
+        )
+    if res.status == 404:
+        return unreal.PlugoonError(
+            has_error=True,
+            message=f"Repo: {name} does not exist"
+        )
+    return unreal.PlugoonError(
+            has_error=True,
+            message=f"Unknown error: {res.status}"
+        )
