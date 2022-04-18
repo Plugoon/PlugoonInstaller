@@ -1,4 +1,3 @@
-from typing import overload
 import unreal
 import utils
 import TokenLib
@@ -38,8 +37,12 @@ class PythonBridgeImplementation(unreal.PythonBridge):
         return utils.get_unreal_version()
 
     @unreal.ufunction(override=True)
-    def get_repos(self):
-        return requests.get_repos()
+    def get_repos(self, version):
+        return requests.get_repos(version)
+
+    @unreal.ufunction(override=True)
+    def get_owned_repos(self):
+        return requests.get_owned_repos()
 
     @unreal.ufunction(override=True)
     def add_repo(self, name, description):

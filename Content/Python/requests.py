@@ -4,7 +4,7 @@ import utils
 import json
 import unreal
 
-def get_repos():
+def get_repos(version: str):
     utils.log("get_repos", "started...")
     token = TokenLib.getAccessToken()
     conn = http.client.HTTPSConnection("plugoon.azure-api.net")
@@ -12,9 +12,44 @@ def get_repos():
     headers = {
         'Authorization': f'Bearer {token}'
     }
-    conn.request("GET", "/api/repo", payload, headers)
+    conn.request("GET", f"/api/repo?version={version}", payload, headers)
     res = conn.getresponse()
     data = res.read()
+    conn.close()
+    if res.status == 200:
+        repos = json.loads(data.decode("utf-8"))
+        result = []
+        for repo in repos:
+            result.append(unreal.PlugoonRepo(
+                name=repo["name"],
+                owner=repo["owner"],
+                description=repo["description"],
+                ue_versions=repo["ueVersions"],
+                packages=repo["packages"]
+            ))
+        return unreal.PlugoonReposResponse(repos=result)
+    if res.status == 401 or res.status == 403:
+        return unreal.PlugoonReposResponse(error=unreal.PlugoonError(
+            has_error=True,
+            message="Invalid access token"
+        ))
+    return unreal.PlugoonReposResponse(error=unreal.PlugoonError(
+        has_error=True,
+        message="Unknown error"
+    ))
+
+def get_owned_repos():
+    utils.log("get_owned_repos", "started...")
+    token = TokenLib.getAccessToken()
+    conn = http.client.HTTPSConnection("plugoon.azure-api.net")
+    payload = ''
+    headers = {
+        'Authorization': f'Bearer {token}'
+    }
+    conn.request("GET", f"/api/repo?owner=true", payload, headers)
+    res = conn.getresponse()
+    data = res.read()
+    conn.close()
     if res.status == 200:
         repos = json.loads(data.decode("utf-8"))
         result = []
@@ -53,6 +88,7 @@ def add_repo(name: str, description: str):
     res = conn.getresponse()
     data = res.read()
     repo = json.loads(data.decode('utf-8'))
+    conn.close()
     if res.status == 201:
         return unreal.PlugoonRepoResponse(repo=unreal.PlugoonRepo(
             name=repo["name"],
@@ -93,6 +129,7 @@ def update_repo(name: str, description: str):
     res = conn.getresponse()
     data = res.read()
     result = json.loads(data.decode('utf-8'))
+    conn.close()
     if res.status == 200:
         return unreal.PlugoonRepoResponse(repo=unreal.PlugoonRepo(
             name=result["name"],
@@ -129,6 +166,7 @@ def delete_repo(name: str):
     conn.request("DELETE", f"/api/repo/{name}", payload, headers)
     res = conn.getresponse()
     data = res.read()
+    conn.close()
     if res.status == 204:
         return unreal.PlugoonError()
     utils.log_error("delete_repo", "failed to update Repo")
@@ -163,6 +201,7 @@ def get_packages(name: str):
     conn.request("GET", f"/api/repo/{name}/package", payload, headers)
     res = conn.getresponse()
     data = res.read()
+    conn.close()
     if res.status == 200:
         packages = json.loads(data.decode("utf-8"))
         result = []
@@ -212,6 +251,7 @@ def add_package(name: str, ue_version: str, package_version: str, url: str, depe
     conn.request("POST", f"/api/repo/{name}/package", payload, headers)
     res = conn.getresponse()
     data = res.read()
+    conn.close()
     if res.status == 201:
         package = json.loads(data.decode("utf-8"))
         return unreal.PlugoonPackageResponse(package=unreal.PlugoonPackage(
@@ -255,6 +295,7 @@ def get_package(name: str, packageId: str):
     conn.request("GET", f"/api/repo/{name}/package/{packageId}", payload, headers)
     res = conn.getresponse()
     data = res.read()
+    conn.close()
     if res.status == 200:
         package = json.loads(data.decode("utf-8"))
         return unreal.PlugoonPackageResponse(package=unreal.PlugoonPackage(
@@ -295,6 +336,7 @@ def update_package(name: str, packageId: str, url: str):
     conn.request("PUT", f"/api/repo/{name}/package/{packageId}", payload, headers)
     res = conn.getresponse()
     data = res.read()
+    conn.close()
     if res.status == 200:
         package = json.loads(data.decode("utf-8"))
         return unreal.PlugoonPackageResponse(package=unreal.PlugoonPackage(
@@ -335,6 +377,7 @@ def deprecate_package(name: str, packageId: str):
     conn.request("PUT", f"/api/repo/{name}/package/{packageId}", payload, headers)
     res = conn.getresponse()
     data = res.read()
+    conn.close()
     if res.status == 200:
         package = json.loads(data.decode("utf-8"))
         return unreal.PlugoonPackageResponse(package=unreal.PlugoonPackage(
@@ -372,6 +415,7 @@ def delete_package(name: str, packageId: str):
     conn.request("DELETE", f"/api/repo/{name}/package/{packageId}", payload, headers)
     res = conn.getresponse()
     data = res.read()
+    conn.close()
     if res.status == 204:
         return unreal.PlugoonError()
     if res.status == 401 or res.status == 403:
@@ -400,6 +444,7 @@ def get_install_list(name: str, packageId: str):
     conn.request("GET", f"/api/repo/{name}/package/{packageId}/install", payload, headers)
     res = conn.getresponse()
     data = res.read()
+    conn.close()
     if res.status == 200:
         packages = json.loads(data.decode("utf-8"))
         result = []

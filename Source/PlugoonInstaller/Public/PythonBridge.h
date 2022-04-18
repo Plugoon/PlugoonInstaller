@@ -28,7 +28,10 @@ public:
     FString GetUnrealVersion();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
-	FPlugoonReposResponse GetRepos();
+	FPlugoonReposResponse GetRepos(const FString& Version);
+	
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
+	FPlugoonReposResponse GetOwnedRepos();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
 	FPlugoonRepoResponse AddRepo(const FString& Name, const FString& Description);
