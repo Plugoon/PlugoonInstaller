@@ -22,6 +22,9 @@ public:
 	UObject* OpenError();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
+	UObject* OpenWidget(const FString& Link);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
 	void SetTokens(const FString& IdToken, const FString& AccessToken);
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
