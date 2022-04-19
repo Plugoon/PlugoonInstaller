@@ -72,7 +72,6 @@ def get_installed_packages():
     for file in files:
         with open(file, "r") as f:
             obj = json.loads(f.read())
-            print(obj)
             result.append(unreal.PlugoonPackage(
                 id=obj["id"],
                 repo_name=obj["repo_name"],
