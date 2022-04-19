@@ -19,6 +19,11 @@ class PythonBridgeImplementation(unreal.PythonBridge):
         )
 
 
+    @unreal.ufunction(override=True)
+    def open_error(self):
+        error = unreal.load_asset('/PlugoonInstaller/Widgets/EUW_Error.EUW_Error')
+        return EditorUtility().spawn_and_register_tab(error)
+
     # Editor startup function
     @unreal.ufunction(override=True)
     def start_installer(self):

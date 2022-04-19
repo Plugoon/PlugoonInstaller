@@ -19,6 +19,9 @@ public:
 	void StartInstaller() const;
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
+	UObject* OpenError();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
 	void SetTokens(const FString& IdToken, const FString& AccessToken);
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
