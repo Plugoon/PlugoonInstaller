@@ -2,6 +2,7 @@ import unreal
 import utils
 import TokenLib
 import requests
+import installer
 
 @unreal.uclass()
 class EditorUtility(unreal.EditorUtilitySubsystem):
@@ -12,8 +13,10 @@ class PythonBridgeImplementation(unreal.PythonBridge):
 
     @unreal.ufunction(override=True)
     def test(self):
-        unreal.log("Test")
-        return ""
+        requests.download_file(
+            "https://github.com/Plugoon/Core/archive/refs/tags/UE5.0-v1.0.zip",
+            f"{unreal.Paths.project_plugins_dir()}/Download.zip"
+        )
 
 
     # Editor startup function
@@ -83,3 +86,15 @@ class PythonBridgeImplementation(unreal.PythonBridge):
     @unreal.ufunction(override=True)
     def get_install_list(self, name, package_id):
         return requests.get_install_list(name, package_id)
+
+    @unreal.ufunction(override=True)
+    def install_packages(self, packages):
+        return installer.install_plugins(packages)
+
+    @unreal.ufunction(override=True)
+    def get_installed_packages(self):
+        return installer.get_installed_packages()
+
+    @unreal.ufunction(override=True)
+    def get_newest_package(self, packages, ue_version):
+        return utils.get_newest_package(packages, ue_version)

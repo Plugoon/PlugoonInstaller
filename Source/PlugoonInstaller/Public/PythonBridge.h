@@ -81,4 +81,13 @@ public:
 		const FString& Name,
 		const FString& PackageId
 	);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
+	FPlugoonError InstallPackages(const TArray<FPlugoonPackage>& Packages);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
+	FPlugoonPackagesResponse GetInstalledPackages();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
+	FPlugoonPackageResponse GetNewestPackage(const TArray<FPlugoonPackage>& Packages, const FString& UeVersion);
 };

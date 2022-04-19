@@ -3,6 +3,7 @@ import TokenLib
 import utils
 import json
 import unreal
+from urllib import request
 
 def get_repos(version: str):
     utils.log("get_repos", "started...")
@@ -473,3 +474,6 @@ def get_install_list(name: str, packageId: str):
         has_error=True,
         message="Unknown error"
     ))
+
+def download_file(url: str, file: str):
+    request.urlretrieve(url, file)
