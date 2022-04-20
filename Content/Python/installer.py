@@ -40,18 +40,18 @@ def install_plugins(list: list[unreal.PlugoonPackage]):
             if not os.path.exists(plugin_folder):
                 os.makedirs(plugin_folder)
                 shutil.unpack_archive(temp_file, plugin_folder)
-                config = {
-                    "id": list[i].id,
-                    "repo_name": list[i].repo_name,
-                    "ue_version": list[i].ue_version,
-                    "package_version": list[i].package_version,
-                    "url": list[i].url,
-                    "deprecated": list[i].deprecated
-                }
-                if list[i].deprecated == True:
-                    deprecated = True
-                with open(f"{plugin_folder}/config.plugoon", "w") as f:
-                    f.write(json.dumps(config, indent=4))
+            config = {
+                "id": list[i].id,
+                "repo_name": list[i].repo_name,
+                "ue_version": list[i].ue_version,
+                "package_version": list[i].package_version,
+                "url": list[i].url,
+                "deprecated": list[i].deprecated
+            }
+            if list[i].deprecated == True:
+                deprecated = True
+            with open(f"{plugin_folder}/config.plugoon", "w") as f:
+                f.write(json.dumps(config, indent=4))
             install_task.enter_progress_frame(1)
     shutil.rmtree(tempFolder)
     if notFound:
