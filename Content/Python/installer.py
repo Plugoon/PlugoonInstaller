@@ -39,7 +39,10 @@ def install_plugins(list: list[unreal.PlugoonPackage]):
             plugin_folder = f"{pluginFolder}{filename}"
             if not os.path.exists(plugin_folder):
                 os.makedirs(plugin_folder)
-                shutil.unpack_archive(temp_file, plugin_folder)
+                try:
+                    shutil.unpack_archive(temp_file, plugin_folder)
+                except:
+                    utils.log_warning("install_plugins", "unpacking problems detected")
             config = {
                 "id": list[i].id,
                 "repo_name": list[i].repo_name,
