@@ -40,10 +40,22 @@ public:
 	FPlugoonReposResponse GetOwnedRepos();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
-	FPlugoonRepoResponse AddRepo(const FString& Name, const FString& Description);
+	FPlugoonRepoResponse AddRepo(
+		const FString& Name,
+		const FString& Description,
+		const FString& RepoLink,
+		const FString& Documentation,
+		const FString& Support
+	);
 	
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
-	FPlugoonRepoResponse UpdateRepo(const FString& Name, const FString& Description);
+	FPlugoonRepoResponse UpdateRepo(
+		const FString& Name,
+		const FString& Description,
+		const FString& RepoLink,
+		const FString& Documentation,
+		const FString& Support
+	);
 	
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Python)
 	FPlugoonError DeleteRepo(const FString& Name);

@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 import http.client
 import TokenLib
 import utils
@@ -21,13 +22,7 @@ def get_repos(version: str):
         repos = json.loads(data.decode("utf-8"))
         result = []
         for repo in repos:
-            result.append(unreal.PlugoonRepo(
-                name=repo["name"],
-                owner=repo["owner"],
-                description=repo["description"],
-                ue_versions=repo["ueVersions"],
-                packages=repo["packages"]
-            ))
+            result.append(convertRepoResponse(repo))
         return unreal.PlugoonReposResponse(repos=result)
     if res.status == 401 or res.status == 403:
         return unreal.PlugoonReposResponse(error=unreal.PlugoonError(
@@ -55,13 +50,7 @@ def get_owned_repos():
         repos = json.loads(data.decode("utf-8"))
         result = []
         for repo in repos:
-            result.append(unreal.PlugoonRepo(
-                name=repo["name"],
-                owner=repo["owner"],
-                description=repo["description"],
-                ue_versions=repo["ueVersions"],
-                packages=repo["packages"]
-            ))
+            result.append(convertRepoResponse(repo))
         return unreal.PlugoonReposResponse(repos=result)
     if res.status == 401 or res.status == 403:
         return unreal.PlugoonReposResponse(error=unreal.PlugoonError(
@@ -73,13 +62,22 @@ def get_owned_repos():
         message="Unknown error"
     ))
 
-def add_repo(name: str, description: str):
+def add_repo(name: str, description: str, repo_link: str, documentation: str, support: str):
     utils.log("add_repos", "started...")
     token = TokenLib.getAccessToken()
     conn = http.client.HTTPSConnection("plugoon.azure-api.net")
+    if repo_link == "": 
+        repo_link = None
+    if documentation == "":
+        documentation = None
+    if support == "":
+        support = None
     payload = json.dumps({
         'name': name,
-        'description': description
+        'description': description,
+        'repoLink': repo_link,
+        'documentation': documentation,
+        'support': support
     })
     headers = {
         'Authorization': f'Bearer {token}',
@@ -91,13 +89,7 @@ def add_repo(name: str, description: str):
     repo = json.loads(data.decode('utf-8'))
     conn.close()
     if res.status == 201:
-        return unreal.PlugoonRepoResponse(repo=unreal.PlugoonRepo(
-            name=repo["name"],
-            owner=repo["owner"],
-            description=repo["description"],
-            packages=repo["packages"],
-            ue_versions=repo["ueVersions"]
-        ))
+        return unreal.PlugoonRepoResponse(repo=convertRepoResponse(repo)) 
         
     utils.log_error("add_repo", "failed to add Repo")
     if res.status == 401 or res.status == 403:
@@ -115,12 +107,23 @@ def add_repo(name: str, description: str):
             message=f"Unknown error: {res.status}"
         ))
 
-def update_repo(name: str, description: str):
+def update_repo(name: str, description: str, repo_link: str, documentation: str, support: str):
     utils.log("update_repo", "started...")
     token = TokenLib.getAccessToken()
     conn = http.client.HTTPSConnection("plugoon.azure-api.net")
+    if description == "":
+        description == None
+    if repo_link == "": 
+        repo_link = None
+    if documentation == "":
+        documentation = None
+    if support == "":
+        support = None
     payload = json.dumps({
-        'description': description
+        'description': description,
+        'repoLink': repo_link,
+        'documentation': documentation,
+        'support': support
     })
     headers = {
         'Authorization': f'Bearer {token}',
@@ -132,13 +135,7 @@ def update_repo(name: str, description: str):
     result = json.loads(data.decode('utf-8'))
     conn.close()
     if res.status == 200:
-        return unreal.PlugoonRepoResponse(repo=unreal.PlugoonRepo(
-            name=result["name"],
-            owner=result["owner"],
-            description=result["description"],
-            packages=result["packages"],
-            ue_versions=result["ueVersions"]
-        ))
+        return unreal.PlugoonRepoResponse(repo=convertRepoResponse(result)) 
         
     utils.log_error("update_repo", "failed to update Repo")
     if res.status == 401 or res.status == 403:
@@ -477,3 +474,24 @@ def get_install_list(name: str, packageId: str):
 
 def download_file(url: str, file: str):
     request.urlretrieve(url, file)
+
+def convertRepoResponse(response) -> unreal.PlugoonRepoResponse:
+    repo_link = response['repoLink']
+    if repo_link == None:
+        repo_link = ""
+    documentation = response['documentation']
+    if documentation == None:
+        documentation = ""
+    support = response['support']
+    if support == None:
+        support = ""
+    return unreal.PlugoonRepo(
+        name=response["name"],
+        owner=response["owner"],
+        description=response["description"],
+        packages=response["packages"],
+        ue_versions=response["ueVersions"],
+        repo_link=repo_link,
+        documentation=documentation,
+        support=support
+    )

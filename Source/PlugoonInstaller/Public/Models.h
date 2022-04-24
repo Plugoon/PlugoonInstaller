@@ -35,6 +35,15 @@ struct FPlugoonRepo
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Plugoon)
 	TArray<FString> Packages;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Plugoon)
+	FString Support;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Plugoon)
+	FString RepoLink;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Plugoon)
+	FString Documentation;
 };
 
 USTRUCT(BlueprintType)

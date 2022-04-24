@@ -58,12 +58,12 @@ class PythonBridgeImplementation(unreal.PythonBridge):
         return requests.get_owned_repos()
 
     @unreal.ufunction(override=True)
-    def add_repo(self, name, description):
-        return requests.add_repo(name, description)
+    def add_repo(self, name, description, repo_link, documentation, support):
+        return requests.add_repo(name, description, repo_link, documentation, support)
 
     @unreal.ufunction(override=True)
-    def update_repo(self, name, description):
-        return requests.update_repo(name, description)
+    def update_repo(self, name, description, repo_link, documentation, support):
+        return requests.update_repo(name, description, repo_link, documentation, support)
 
     @unreal.ufunction(override=True)
     def delete_repo(self, name):
